@@ -10,8 +10,8 @@ program animales {
 	/*
 	 * Agregamos personajes
 	 */ 
-//	var animalActual = new Vaca()
-	var animalActual = new Gallina()
+	var animalActual = new Vaca()
+//	var animalActual = new Gallina()
 	game.addVisual(animalActual)
 
 	/*
@@ -32,7 +32,7 @@ program animales {
 	 	}
 	 })
 	 
-	 keyboard.up().onPressDo({ animalActual.position(animalActual.position().up(1)) })
+	 keyboard.up().onPressDo({ animalActual.subir() })
 	 keyboard.down().onPressDo({ => animalActual.position(animalActual.position().down(1)) })
 	 keyboard.left().onPressDo({ => animalActual.position(animalActual.position().left(1)) })
 	 keyboard.right().onPressDo({ => animalActual.position(animalActual.position().right(1)) })
@@ -40,10 +40,13 @@ program animales {
 	 
 	 keyboard.down().onPressDo({ => animalActual.position().up(1)})
 	 
-//	 keyboard.up()
-//	 keyboard.down()
-//	 keyboard.left()
-//	 keyboard.right()
+//	 whenCollideDo para manejar las colisiones
+//	 game.whenCollideDo(comedero, { animal =>
+//	 	animal.position(animal.position().down(1))
+//	 	if (comedero.puedeAtender)
+//	 	
+//	 })
+	 
 	 
 	/*
 	 * Arrancamos el juego
