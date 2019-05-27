@@ -1,56 +1,58 @@
 import wollok.game.*
 import animales.*
+import Comedero.*
 
 program animales {
 	
 //	Configuración de pantalla
 	game.width(10)
 	game.height(10)
-
-	/*
-	 * Agregamos personajes
-	 */ 
-	var animalActual = new Vaca()
-//	var animalActual = new Gallina()
+	
+//	Agregamos personajes y el comedero
+//	var animalActual = new Vaca()
+	var comedero = new Comedero()
+	var animalActual = new Gallina()
 	game.addVisual(animalActual)
+	game.addVisual(comedero)
 
-	/*
-	 * Configuraciones de teclado
-	 */
-	 keyboard.c().onPressDo({ => animalActual.comer(12) })
-	 keyboard.p().onPressDo({
-	 	game.say(animalActual, animalActual.peso().toString())
-	 })
-	 
-	 keyboard.b().onPressDo({ => animalActual.beber()})
-	 
-	 keyboard.t().onPressDo({
-	 	if (animalActual.tieneSed()) {
-	 		game.say(animalActual, "Tengo sed")
-	 	} else {
-	 		game.say(animalActual, "No tengo sed")
-	 	}
-	 })
-	 
-	 keyboard.up().onPressDo({ animalActual.subir() })
-	 keyboard.down().onPressDo({ => animalActual.position(animalActual.position().down(1)) })
-	 keyboard.left().onPressDo({ => animalActual.position(animalActual.position().left(1)) })
-	 keyboard.right().onPressDo({ => animalActual.position(animalActual.position().right(1)) })
-	 
-	 
-	 keyboard.down().onPressDo({ => animalActual.position().up(1)})
-	 
-//	 whenCollideDo para manejar las colisiones
-//	 game.whenCollideDo(comedero, { animal =>
-//	 	animal.position(animal.position().down(1))
-//	 	if (comedero.puedeAtender)
-//	 	
-//	 })
-	 
-	 
-	/*
-	 * Arrancamos el juego
-	 */
-	 game.start()
-	 
+//	Movimientos
+	keyboard.up().onPressDo({ => animalActual.subir() })
+	keyboard.down().onPressDo({ => animalActual.bajar() })
+	keyboard.right().onPressDo({ => animalActual.derecha() })
+	keyboard.left().onPressDo({ => animalActual.izquierda() })
+	
+//	Acciones de los animales
+	keyboard.c().onPressDo({ => animalActual.comer(12) })
+	keyboard.p().onPressDo({ game.say(animalActual, animalActual.peso().toString()) })
+	keyboard.b().onPressDo({ => animalActual.beber() })
+	
+	keyboard.t().onPressDo({ 
+		if (animalActual.tieneSed()) {
+			game.say(animalActual, "Tengo sed")
+		} else {
+			game.say(animalActual, "No tengo sed")
+		}
+	})
+	
+	keyboard.h().onPressDo({ 
+		if (animalActual.tieneHambre()) {
+			game.say(animalActual, "Tengo hambre")
+		} else {
+			game.say(animalActual, "No tengo hambre")
+		}
+	})
+	
+//	Manejo de colisiones
+	game.whenCollideDo(comedero, { animal =>
+		animal.position(animal.position().down(1))
+		if (comedero.puedeAtender(animal)) {
+			comedero.atender(animal)
+			game.say(animal, "Gracias por la papa")
+		} else {
+			game.say(comedero, "No te puedo atender")
+		}
+	})
+
+//	Arrancamos el juego
+	game.start()
 }
